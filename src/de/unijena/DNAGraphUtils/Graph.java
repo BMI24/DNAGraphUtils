@@ -2,7 +2,6 @@ package de.unijena.DNAGraphUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
-import de.unijena.DNAGraphUtils.Pair;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -16,7 +15,7 @@ public class Graph {
     private ArrayList<Pair<Integer, Integer>> edges;
 
     /**
-     * Decodes the repr to a Graph object with the given encoding.
+     * Decodes the representation to a Graph object with the given encoding.
      *
      * @param repr DNA sequence of a Graph object
      * @param encoding the instance of an {@link GraphEncoding} implementation
@@ -187,15 +186,15 @@ public class Graph {
 
     /**
      * With the translation combinations, the vertices in the g2 edge get translated (get new numbers).
-     * If a translation let the edges of g2 be the same as the edges of g1, g1 and g2 are isomorph.
+     * If a translation let the edges of g2 be the same as the edges of g1, g1 and g2 are isomorphic.
      *
-     * @param other the de.unijena.DNAGraphUtils.Graph g2
+     * @param other the other g2 which will should be tested for isomorphism with the instance this method is operating on.
      * @param g2Edges all edges in g2
      * @param translationCombinations contains combinations of numbers as translations for vertices in g2
-     * @return true if a translation of the vertices in g2 let g1 and g2 be isomorph to each other,
-     *         false if there is no translation to let them be isomorph
+     * @return true if a translation of the vertices in g2 let g1 and g2 be isomorphic to each other,
+     *         false if there is no translation to let them be isomorphic
      */
-    private boolean checkIfIsomorph(Graph other, ArrayList<Pair<Integer, Integer>> g2Edges, ArrayList<ArrayList<Integer>> translationCombinations) {
+    private boolean checkIfIsomorphic(Graph other, ArrayList<Pair<Integer, Integer>> g2Edges, ArrayList<ArrayList<Integer>> translationCombinations) {
         ArrayList<Pair<Integer, Integer>> prevG2Edges = new ArrayList<>();
 
         for (Pair<Integer, Integer> edge : g2Edges) {
@@ -220,17 +219,14 @@ public class Graph {
     }
 
     /**
-     * Checks if de.unijena.DNAGraphUtils.Graph "this" as g1 and "other" as g2 are isomorph to each other.
+     * Checks if de.unijena.DNAGraphUtils.Graph "this" as g1 and "other" as g2 are isomorphic to each other.
      * Translates the vert numbers of the edges in g2 depending on the vert numbers of the edges in g1.
      * This happens based on the frequencies of the nodes.
      *
      * @param other a de.unijena.DNAGraphUtils.Graph with vertices and edges
-     * @return true if g1 and g2 are isomorph to each other, false if not
+     * @return true if g1 and g2 are isomorphic to each other, false if not
      */
-    public boolean isIsomorphTo(Graph other){
-        //System.out.println("startFirst:  " + this);
-        //System.out.println("startSecond: " + other);
-
+    public boolean isIsomorphicTo(Graph other){
         if (this.getEdges().size() != other.getEdges().size()
                 || this.getVertices().size() != other.getVertices().size()) {
             return false;
@@ -260,6 +256,6 @@ public class Graph {
 
         ArrayList<ArrayList<Integer>> translationCombinations = findTranslationCombinations(possibleTranslationsG2Vertices);
 
-        return checkIfIsomorph(other, g2Edges, translationCombinations);
+        return checkIfIsomorphic(other, g2Edges, translationCombinations);
     }
 }

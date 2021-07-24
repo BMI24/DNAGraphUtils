@@ -1,7 +1,6 @@
 package de.unijena.DNAGraphUtils;
 
 import java.util.*;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ class DNAHelper {
      * @param regex Regex to use
      * @return first matched string
      */
-    public static String findFirstOccurance(String str, String regex){
+    public static String findFirstOccurrence(String str, String regex){
         Matcher m =  Pattern.compile(regex)
                 .matcher(str);
         if (m.find())
@@ -101,10 +100,10 @@ class DNAHelper {
      * @param sb object which values will be appended to
      */
     public static void appendList(List<Integer> vals, StringBuilder sb){
-        // Länge l (Länge der Kodierung des maximalen Werts, Base 3)
-        // Trennzeichen T
-        // Jeden Wert in fixer Länge l (Base 3):
-        // Trennzeichen T
+        // length l (length of the maximal value in vals when encoded in base 3)
+        // delimiter T
+        // every value in fixed length l (in base 3):
+        // delimiter T
         int maxValue = Collections.max(vals);
         int maxValueReprLength = toDNA(maxValue, 3).length();
         sb.append(toDNA(maxValueReprLength, 3));
@@ -121,10 +120,10 @@ class DNAHelper {
      * @return rest of the string
      */
     public static String parseList(Collection<Integer> vals, String repr){
-        String lengthStr = findFirstOccurance(repr, "^[ACG]*(?=T)");
+        String lengthStr = findFirstOccurrence(repr, "^[ACG]*(?=T)");
         int length = parseDNA(lengthStr, 3);
         repr = repr.substring(lengthStr.length() + 1);
-        String valsStr = findFirstOccurance(repr, "^[ACG]*(?=T)");
+        String valsStr = findFirstOccurrence(repr, "^[ACG]*(?=T)");
         for (int i = 0; i < valsStr.length(); i+= length) {
             String valStr = valsStr.substring(i, i+length);
             vals.add(parseDNA(valStr, 3));

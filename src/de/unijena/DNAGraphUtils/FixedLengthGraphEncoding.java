@@ -1,13 +1,9 @@
 package de.unijena.DNAGraphUtils;
 
-import de.unijena.DNAGraphUtils.GraphEncoding;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
 import java.util.Collections;
 import static de.unijena.DNAGraphUtils.DNAHelper.*;
 
@@ -19,7 +15,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
      * Encodes a graph to a DNA sequence with the option to preserve the current vertex order.
      *
      * @param graph a {@link Graph} object
-     * @param preserveOrder indicates wether the order needs to be preserved
+     * @param preserveOrder indicates whether the order needs to be preserved
      * @return DNA sequence of the graph
      */
     public String toString(Graph graph, boolean preserveOrder) {
@@ -76,7 +72,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
      * @param repr the DNA sequence of a graph
      */
     public void load(Graph graph, String repr) {
-        String header = findFirstOccurance(repr, "^A*C");
+        String header = findFirstOccurrence(repr, "^A*C");
         int vertReprLength = header.length() - 1;
         if (vertReprLength == 0){
             int vertCount = parseDNA(repr.substring(1),4);

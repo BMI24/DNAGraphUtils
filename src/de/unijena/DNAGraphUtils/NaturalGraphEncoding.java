@@ -1,12 +1,8 @@
 package de.unijena.DNAGraphUtils;
 
-import de.unijena.DNAGraphUtils.Graph;
-import de.unijena.DNAGraphUtils.GraphEncoding;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +72,7 @@ public class NaturalGraphEncoding implements GraphEncoding {
      * Implements {@link GraphEncoding::toString}.
      *
      * @param graph a {@link Graph} object
-     * @param preserveOrder indicates wether the order needs to be preserved
+     * @param preserveOrder indicates whether the order needs to be preserved
      * @return DNA sequence of the graph
      */
     public String toString(Graph graph, boolean preserveOrder){

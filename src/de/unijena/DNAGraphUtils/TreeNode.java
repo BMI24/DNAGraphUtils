@@ -15,7 +15,7 @@ public class TreeNode implements Comparable<TreeNode>{
     }
 
     /**
-     * Constructs a new instance with an intial frequency and value.
+     * Constructs a new instance with an initial frequency and value.
      *
      * @param frequency initial frequency
      * @param value initial value

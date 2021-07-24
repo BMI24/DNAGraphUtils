@@ -155,7 +155,7 @@ public class HuffmanGraphEncoding implements GraphEncoding{
      * Implements {@link GraphEncoding#toString(Graph, boolean)}.
      *
      * @param graph a {@link Graph} object
-     * @param preserveOrder indicates wether the order needs to be preserved
+     * @param preserveOrder indicates whether the order needs to be preserved
      * @return DNA sequence of the graph
      */
     public String toString(Graph graph, boolean preserveOrder){
@@ -169,16 +169,16 @@ public class HuffmanGraphEncoding implements GraphEncoding{
         StringBuilder result = new StringBuilder();
 
         if (preserveOrder) {
-            // Trennzeichen T
+            // delimiter T
             result.append("T");
-            // Liste: Für jeden Knoten die Tiefe des Knotens im Huffman Baum
+            // list: for each vertex: the depth of the vertex in the huffman tree
             appendList(vertices.stream().map(vert -> map.get(vert).length()).collect(Collectors.toList()), result);
         }
         else{
-            // Liste: Für jede Huffman-Baum Tiefe: Anzahl der Knoten in der Tiefe
+            // list: for each huffman tree depth: count of nodes in this depth
             appendList(depthToNodes.stream().map(TreeSet::size).collect(Collectors.toList()), result);
         }
-        // Alle Kanten
+        // all edges
         for (Pair<Integer,Integer> edge:graph.getEdges()){
             result.append(map.get(edge.getV1()));
             result.append(map.get(edge.getV2()));
@@ -205,9 +205,9 @@ public class HuffmanGraphEncoding implements GraphEncoding{
         Map<Integer, TreeSet<Integer>> depthToNodes = new HashMap<>();
         if (isOrderPreserved) {
             // preserveOrder == true:
-            // Trennzeichen T (schon überprüft)
+            // delimiter T (already checked)
             repr = repr.substring(1);
-            // Liste: Für jeden Knoten die Tiefe des Knotens im Huffman Baum
+            // list: for each vertex: the depth of the vertex in the huffman tree
             ArrayList<Integer> nodeDepths = new ArrayList<>();
             repr = parseList(nodeDepths, repr);
             vertCount = nodeDepths.size();
@@ -217,12 +217,12 @@ public class HuffmanGraphEncoding implements GraphEncoding{
                     depthToNodes.put(depth, new TreeSet<>());
                 depthToNodes.get(depth).add(i);
             }
-            // Trennzeichen T
-            // Alle Kanten
+            // delimiter T
+            // all edges
         }
         else{
             // preserveOrder == false:
-            // Länge k Länge der Kodierung der maximimalen Anzahl der Knoten pro Tiefe)
+            // list: for each huffman tree depth: count of nodes in this depth
             ArrayList<Integer> countPerDepth = new ArrayList<>();
             repr = parseList(countPerDepth, repr);
             vertCount = 0;
@@ -234,8 +234,8 @@ public class HuffmanGraphEncoding implements GraphEncoding{
                 }
                 depthToNodes.put(depthToNodes.size(), set);
             }
-            // Trennzeichen T
-            // Alle Kanten
+            // delimiter T
+            // all edges
         }
 
 

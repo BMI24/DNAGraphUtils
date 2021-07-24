@@ -1,9 +1,5 @@
 package de.unijena.DNAGraphUtils;
 
-import de.unijena.DNAGraphUtils.Graph;
-import de.unijena.DNAGraphUtils.GraphEncoding;
-import de.unijena.DNAGraphUtils.Pair;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -87,11 +83,11 @@ public class GraphBenchmark {
      * Creates for a number of 1 to "maxVerticesNumber" vertices a number of "maxGraphNumber" different graphs.
      * Creates the same amount of graphs random uniformly and normally distributed.
      * Encodes with the implementation all graphs to DNA sequence with preserveOrder true and false.
-     * Than decodes the DNA sequences and check if any generated graph is not isomorph to the corresponding
+     * Than decodes the DNA sequences and check if any generated graph is not isomorphic to the corresponding
      * decoded graph.
      *
      * @param code contains an instance of an {@link GraphEncoding} implementation
-     * @return true if every random graph is isomorph to the decoded counterpart, else false
+     * @return true if every random graph is isomorphic to the decoded counterpart, else false
      */
     public static boolean testIsomorphismPreservation(GraphEncoding code){
         int maxVerticesNumber = 10, maxGraphNumber = 10;
@@ -109,7 +105,7 @@ public class GraphBenchmark {
                 Graph preserveOrderGraph = new Graph(preserveOrderSequence, code);
                 Graph noOrderGraph = new Graph(noOrderSequence, code);
 
-                if(!randomGraph.isIsomorphTo(preserveOrderGraph) || !randomGraph.isIsomorphTo(noOrderGraph)){
+                if(!randomGraph.isIsomorphicTo(preserveOrderGraph) || !randomGraph.isIsomorphicTo(noOrderGraph)){
                     return false;
                 }
             }
@@ -128,7 +124,7 @@ public class GraphBenchmark {
                 Graph preserveOrderGraph = new Graph(preserveOrderSequence, code);
                 Graph noOrderGraph = new Graph(noOrderSequence, code);
 
-                if(!randomGraph.isIsomorphTo(preserveOrderGraph) || !randomGraph.isIsomorphTo(noOrderGraph)){
+                if(!randomGraph.isIsomorphicTo(preserveOrderGraph) || !randomGraph.isIsomorphicTo(noOrderGraph)){
                     return false;
                 }
             }
@@ -149,7 +145,6 @@ public class GraphBenchmark {
      * @param rand Instance of {@link Random} which is used for random vertex selection. May be null
      * @return file path of the CSV file
      */
-    //vllt. noch Durchschnitt berechnen wie viel besser eine Struktur war oder so um zurück zu geben wie gut diese abgeschnitten haben
     public static String sampleEncodings(GraphEncoding[] encodings, int maxVerticesCount, Random rand){
         if (rand == null)
             rand = new Random();

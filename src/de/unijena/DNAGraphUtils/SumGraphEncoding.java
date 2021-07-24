@@ -1,9 +1,5 @@
 package de.unijena.DNAGraphUtils;
 
-import de.unijena.DNAGraphUtils.Graph;
-import de.unijena.DNAGraphUtils.GraphEncoding;
-import de.unijena.DNAGraphUtils.Pair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
