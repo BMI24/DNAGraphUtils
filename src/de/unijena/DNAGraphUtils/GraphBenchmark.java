@@ -4,6 +4,7 @@ import de.unijena.DNAGraphUtils.Graph;
 import de.unijena.DNAGraphUtils.GraphEncoding;
 import de.unijena.DNAGraphUtils.Pair;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
@@ -153,7 +154,10 @@ public class GraphBenchmark {
         if (rand == null)
             rand = new Random();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-        String filePath = "src/DNASequenceLengthTests/" + LocalDateTime.now().format(formatter) +"-DNASequenceLength.csv";
+        String folderPath = "benchmark";
+        //noinspection ResultOfMethodCallIgnored
+        new File(folderPath).mkdirs();
+        String filePath = folderPath + "/" + LocalDateTime.now().format(formatter) +"-DNASequenceLength.csv";
         try (PrintWriter writer = new PrintWriter(filePath)) {
             writer.append("VerticesInGraph").append(";");
             writer.append("EdgesInGraph").append(";");

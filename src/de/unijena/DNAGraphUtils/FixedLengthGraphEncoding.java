@@ -27,7 +27,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
         if (graph.getVertices().isEmpty())
             return "C";
         HashSet<Integer> usedVerts = new HashSet<>();
-        for (var edge:graph.getEdges()) {
+        for (Pair<Integer,Integer> edge:graph.getEdges()) {
             usedVerts.add(edge.getV1());
             usedVerts.add(edge.getV2());
         }
@@ -55,7 +55,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
         int reprLength = (int)Math.ceil(Math.log(preserveOrder ? graph.getVertices().size() : usedVerts.size()) + 1 / Math.log(4));
         result.append(toDNA(0, 4, reprLength));
         result.append('C');
-        for (var edge:graph.getEdges()){
+        for (Pair<Integer,Integer> edge:graph.getEdges()){
             result.append(toDNA(vertToRepr.get(edge.getV1()), 4, reprLength));
             result.append(toDNA(vertToRepr.get(edge.getV2()), 4, reprLength));
         }
@@ -76,8 +76,8 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
      * @param repr the DNA sequence of a graph
      */
     public void load(Graph graph, String repr) {
-        var header = findFirstOccurance(repr, "^A*C");
-        var vertReprLength = header.length() - 1;
+        String header = findFirstOccurance(repr, "^A*C");
+        int vertReprLength = header.length() - 1;
         if (vertReprLength == 0){
             int vertCount = parseDNA(repr.substring(1),4);
             for (int i = 0; i < vertCount; i++) {
@@ -85,7 +85,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
             }
             return;
         }
-        var zeroVert = header.substring(0, header.length() - 1);
+        String zeroVert = header.substring(0, header.length() - 1);
         Map<String, Integer> vertReprToVert = new HashMap<>();
 
         int maxVert = 0;
@@ -94,7 +94,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
             String firstVert = repr.substring(i, i + vertReprLength);
             if (firstVert.equals(zeroVert))
                 break;
-            var secondVert = repr.substring(i + vertReprLength, i + 2 * vertReprLength);
+            String secondVert = repr.substring(i + vertReprLength, i + 2 * vertReprLength);
             if (!vertReprToVert.containsKey(firstVert)) {
                 vertReprToVert.put(firstVert, parseDNA(firstVert, 4) - 1);
                 graph.getVertices().add(vertReprToVert.get(firstVert));
@@ -112,7 +112,7 @@ public class FixedLengthGraphEncoding implements GraphEncoding {
                 graph.getVertices().add(j);
         }
 
-        var tailVerts = parseDNA(repr.substring(i), 4);
+        int tailVerts = parseDNA(repr.substring(i), 4);
         for (int j = 0; j < tailVerts; j++) {
             graph.getVertices().add(graph.getVertices().size());
         }

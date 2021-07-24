@@ -2,6 +2,7 @@ package de.unijena.DNAGraphUtils;
 
 import java.util.*;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -16,11 +17,12 @@ class DNAHelper {
      * @return first matched string
      */
     public static String findFirstOccurance(String str, String regex){
-        return Pattern.compile(regex)
-                .matcher(str)
-                .results()
-                .map(MatchResult::group)
-                .toArray(String[]::new)[0];
+        Matcher m =  Pattern.compile(regex)
+                .matcher(str);
+        if (m.find())
+            return m.group();
+
+        throw new IllegalArgumentException("No matches found");
     }
 
     /**
@@ -84,8 +86,8 @@ class DNAHelper {
      * @return inverted map
      */
     public static <T,V> HashMap<T,V> invertMap(Map<V,T> map){
-        HashMap<T,V> invMap = new HashMap<T,V>();
-        for (var entry : map.entrySet()) {
+        HashMap<T,V> invMap = new HashMap<>();
+        for (Map.Entry<V,T> entry : map.entrySet()) {
             invMap.put(entry.getValue(), entry.getKey());
         }
         return invMap;

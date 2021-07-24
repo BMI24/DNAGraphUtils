@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,20 +20,21 @@ public class NaturalGraphEncoding implements GraphEncoding {
      * @param repr the DNA sequence of a graph
      */
     public void load(Graph graph, String repr) {
-        String[] graphElements = Pattern.compile("(?<=\\{).+?(?=\\})")
-                .matcher(repr)
-                .results()
-                .map(MatchResult::group)
-                .toArray(String[]::new);
+        ArrayList<String> graphElements = new ArrayList<>();
+        Matcher m = Pattern.compile("(?<=\\{).+?(?=})")
+                .matcher(repr);
+        while (m.find()){
+            graphElements.add(m.group());
+        }
 
         String vertsRepr = "";
         String edgesRepr = "";
 
-        if (!graphElements[0].equals("},{")){
-            vertsRepr = graphElements[0];
+        if (!graphElements.get(0).equals("},{")){
+            vertsRepr = graphElements.get(0);
         }
-        if (graphElements.length > 1){
-            edgesRepr = graphElements[1].replaceAll("[()]", "");
+        if (graphElements.size() > 1){
+            edgesRepr = graphElements.get(1).replaceAll("[()]", "");
         }
 
         Map<String, Integer> vertToInt = new HashMap<>();
@@ -58,8 +60,8 @@ public class NaturalGraphEncoding implements GraphEncoding {
             String[] edgesElements = edgesRepr.split(",");
 
             for (int i = 0; i < edgesElements.length; i+=2) {
-                var v1 = vertToInt.get(edgesElements[i]);
-                var v2 = vertToInt.get(edgesElements[i + 1]);
+                Integer v1 = vertToInt.get(edgesElements[i]);
+                Integer v2 = vertToInt.get(edgesElements[i + 1]);
                 edges.add(new Pair<>(v1, v2));
             }
 

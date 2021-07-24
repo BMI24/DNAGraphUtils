@@ -2,6 +2,7 @@ package de.unijena.DNAGraphUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
+import de.unijena.DNAGraphUtils.Pair;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -29,7 +30,7 @@ public class Graph {
      * Creates an empty instance of a Graph.
      */
     public Graph() {
-        this(new ArrayList<Integer>(), new ArrayList<Pair<Integer, Integer>>());
+        this(new ArrayList<>(), new ArrayList<>());
     }
 
     /**
@@ -70,7 +71,6 @@ public class Graph {
      *
      * @param code the instance of an {@link GraphEncoding} implementation
      * @param preserveOrder indicates whether the order needs to be preserved
-     * @return
      */
     public String toString(GraphEncoding code, boolean preserveOrder) {
         return code.toString(this, preserveOrder);
@@ -128,14 +128,14 @@ public class Graph {
      * @param translation contains a number as possible translation for a vert in g2
      */
     private void addNewCombinationsToList(ArrayList<ArrayList<Integer>> translationCombinations, ArrayList<ArrayList<Integer>> newTranslationCombinations, Integer translation) {
-        for (var combination : translationCombinations) {
+        for (ArrayList<Integer> combination : translationCombinations) {
             ArrayList<Integer> newCombination = new ArrayList<>(combination);
             newCombination.add(translation);
 
             Map<Object, Long> numberCount = newCombination.stream().collect(groupingBy(e -> e, counting()));
             boolean forbiddenCombination = false;
 
-            for (var count : numberCount.entrySet()) {
+            for (Map.Entry<Object, Long> count : numberCount.entrySet()) {
                 if(count.getValue() > 1){
                     forbiddenCombination = true;
                     break;
@@ -198,7 +198,7 @@ public class Graph {
     private boolean checkIfIsomorph(Graph other, ArrayList<Pair<Integer, Integer>> g2Edges, ArrayList<ArrayList<Integer>> translationCombinations) {
         ArrayList<Pair<Integer, Integer>> prevG2Edges = new ArrayList<>();
 
-        for (var edge : g2Edges) {
+        for (Pair<Integer, Integer> edge : g2Edges) {
             prevG2Edges.add(new Pair<>(edge));
         }
 
@@ -246,12 +246,12 @@ public class Graph {
         ArrayList<Pair<Integer, Integer>> g1Edges = this.getEdges();
         ArrayList<Pair<Integer, Integer>> g2Edges = other.getEdges();
 
-        for (var edge : g1Edges) {
+        for (Pair<Integer, Integer> edge : g1Edges) {
             ++g1Frequencies[edge.getV1()];
             ++g1Frequencies[edge.getV2()];
         }
 
-        for (var edge : g2Edges) {
+        for (Pair<Integer, Integer> edge : g2Edges) {
             ++g2Frequencies[edge.getV1()];
             ++g2Frequencies[edge.getV2()];
         }

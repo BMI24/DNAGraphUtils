@@ -14,7 +14,7 @@ public class HuffmanGraphEncoding implements GraphEncoding{
      *
      * @param edges List of all edges
      * @param vertCount Count of the vertices in the belonging graph
-     * @return  List over {@link ComparablePair<Integer,Integer>} which contains 1. the frequency of the node 2. the index of the node
+     * @return  List over {@link ComparablePair} which contains 1. the frequency of the node 2. the index of the node
      */
     private static ArrayList<ComparablePair<Integer, Integer>> getVertFrequencies(ArrayList<Pair<Integer, Integer>> edges, int vertCount){
         int[] vertFrequency = new int[vertCount];
@@ -40,7 +40,7 @@ public class HuffmanGraphEncoding implements GraphEncoding{
      * @param depthToNodes {@link Map} which will be used for saving the depth of each node
      */
     private static void generateDepthToNodesRecursive(TreeNode node, int depth, Map<Integer, TreeSet<Integer>> depthToNodes){
-        var children = node.getChildren();
+        TreeNode[] children = node.getChildren();
         if (children[0] == null) {
             if (!depthToNodes.containsKey(depth))
                 depthToNodes.put(depth, new TreeSet<>());
@@ -69,14 +69,14 @@ public class HuffmanGraphEncoding implements GraphEncoding{
     }
 
     /**
-     * Converts a {@link Map<Integer,TreeSet<Integer>>} to a {@link ArrayList<TreeSet<Integer>>}, filling non-existing
+     * Converts a {@link Map} to a {@link ArrayList}, filling non-existing
      * entries with empty sets.
      *
      * @param map Source map
      * @return Array sourced from the given map
      */
     private static ArrayList<TreeSet<Integer>> convertIntegerMapToArray(Map<Integer, TreeSet<Integer>> map){
-        int maxIndex = map.keySet().stream().max(Integer::compareTo).get();
+        int maxIndex = map.keySet().stream().max(Integer::compareTo).orElse(-1);
         ArrayList<TreeSet<Integer>> arr = new ArrayList<>();
         for (int i = 0; i <= maxIndex; i++) {
             arr.add(map.containsKey(i) ? map.get(i) : new TreeSet<>());
@@ -94,7 +94,7 @@ public class HuffmanGraphEncoding implements GraphEncoding{
         Map<Integer, String> decodingMap = new HashMap<>();
         int code = 0;
         for (TreeSet<Integer> depthToNode : depthToNodes) {
-            for (var node : depthToNode) {
+            for (Integer node : depthToNode) {
                 decodingMap.put(node, toDNA(code, 4));
                 code += 1;
             }
@@ -136,13 +136,13 @@ public class HuffmanGraphEncoding implements GraphEncoding{
      * @return Root of the constructed Huffman tree
      */
     private static TreeNode generateHuffman4aryTree(ArrayList<ComparablePair<Integer, Integer>> frequencies) {
-        var probabilityList = new PriorityQueue<TreeNode>();
+        PriorityQueue<TreeNode> probabilityList = new PriorityQueue<>();
         for (ComparablePair<Integer, Integer> probability : frequencies) {
             probabilityList.add(new TreeNode(probability.getV1(), probability.getV2()));
         }
 
         int usableSymbols = 4; // since we construct a 4-ary tree
-        var initial_count = probabilityList.size() == 1 ? 1 : 2 + (probabilityList.size() - 2) % (usableSymbols - 1);
+        int initial_count = probabilityList.size() == 1 ? 1 : 2 + (probabilityList.size() - 2) % (usableSymbols - 1);
         mergeLeastFrequentHuffmanNodes(probabilityList, initial_count);
         while (probabilityList.size() !=  1) {
             mergeLeastFrequentHuffmanNodes(probabilityList,  usableSymbols);
@@ -162,9 +162,9 @@ public class HuffmanGraphEncoding implements GraphEncoding{
         ArrayList<Integer> vertices = graph.getVertices();
         ArrayList<Pair<Integer, Integer>> edges = graph.getEdges();
         ArrayList<ComparablePair<Integer, Integer>> vertAndFrequencyPairs = getVertFrequencies(edges, vertices.size());
-        var tree = generateHuffman4aryTree(vertAndFrequencyPairs);
-        var depthToNodes = groupNodesByDepth(tree);
-        var map = generateVertMap(depthToNodes);
+        TreeNode tree = generateHuffman4aryTree(vertAndFrequencyPairs);
+        ArrayList<TreeSet<Integer>> depthToNodes = groupNodesByDepth(tree);
+        Map<Integer,String> map = generateVertMap(depthToNodes);
 
         StringBuilder result = new StringBuilder();
 
@@ -179,7 +179,7 @@ public class HuffmanGraphEncoding implements GraphEncoding{
             appendList(depthToNodes.stream().map(TreeSet::size).collect(Collectors.toList()), result);
         }
         // Alle Kanten
-        for (var edge:graph.getEdges()){
+        for (Pair<Integer,Integer> edge:graph.getEdges()){
             result.append(map.get(edge.getV1()));
             result.append(map.get(edge.getV2()));
         }

@@ -221,7 +221,7 @@ public class SumGraphEncoding implements GraphEncoding {
             vertices.set(i, vertices.get(i) - 1);
         }
         for (int i = 0; i < edges.size(); i++) {
-            var edge = edges.get(i);
+            Pair<Integer,Integer> edge = edges.get(i);
             edges.set(i, new Pair<>(edge.getV1() - 1, edge.getV2() - 1));
         }
 
